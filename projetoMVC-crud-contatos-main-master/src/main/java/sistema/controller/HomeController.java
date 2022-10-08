@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @Controller
 public class HomeController {
 
@@ -46,14 +45,14 @@ public class HomeController {
     }
 
     @PostMapping("novo")
-    public String gravaDados(Contato contato) {   
+    public String gravaDados(Contato contato) {
         db.update("insert into contatos(nome) values (?)",
                 contato.getNome());
         return "home";
     }
 
     @GetMapping("excluir-contato")
-    public String apagarContato(@RequestParam(value = "id", required = true) Integer cod) {        
+    public String apagarContato(@RequestParam(value = "id", required = true) Integer cod) {
         db.update("delete from contatos where id = ?", cod);
         return "redirect:/contatos";
     }
@@ -65,8 +64,8 @@ public class HomeController {
                 "select * from contatos where id = ?",
                 (rs, rowNum) -> {
                     Contato c = new Contato();
-                    c.setId(rs.getInt("id"));                    
-                    c.setNome(rs.getString("nome"));                   
+                    c.setId(rs.getInt("id"));
+                    c.setNome(rs.getString("nome"));
                     return c;
                 },
                 cod);
@@ -74,14 +73,13 @@ public class HomeController {
         return "formeditacontato";
     }
 
-    
     @PostMapping("gravacontatomodificado")
     public String gravaContatoModificado(Contato contato) {
         db.update(
-                "update contatos set nome=?, where id = ?",
-                contato.getNome(),                
+                "update contatos set nome=? where id = ?",
+                contato.getNome(),
                 contato.getId());
         return "redirect:/contatos";
     }
-    
+
 }
